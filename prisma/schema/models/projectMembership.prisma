@@ -1,0 +1,14 @@
+model ProjectMembership {
+    id        String            @id @default(uuid())
+    projectId String
+    userId    String
+    role      ProjectMemberRole @default(MEMBER)
+    project   Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    user      User              @relation(fields: [userId], references: [id])
+    createdAt DateTime          @default(now())
+    updatedAt DateTime          @updatedAt
+
+    @@unique([projectId, userId])
+    @@index([userId])
+    @@index([projectId, role])
+}

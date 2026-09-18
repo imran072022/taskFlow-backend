@@ -1,0 +1,14 @@
+model OrganizationInvitation {
+    id             String           @id @default(uuid())
+    organizationId String
+    inviterId      String
+    inviteeId      String
+    status         InvitationStatus @default(REQUESTED)
+    organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+    inviter        User             @relation("InvitationInviter", fields: [inviterId], references: [id])
+    invitee        User             @relation("InvitationInvitee", fields: [inviteeId], references: [id])
+    createdAt      DateTime         @default(now())
+    updatedAt      DateTime         @updatedAt
+
+    @@index([inviteeId])
+}

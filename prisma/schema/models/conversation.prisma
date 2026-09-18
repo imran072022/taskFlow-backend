@@ -1,0 +1,10 @@
+model Conversation {
+    id        String    @id @default(uuid())
+    managerId String    @unique
+    manager   User      @relation("ManagerConversations", fields: [managerId], references: [id])
+    ownerId   String
+    owner     User      @relation("OwnerConversations", fields: [ownerId], references: [id])
+    messages  Message[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}

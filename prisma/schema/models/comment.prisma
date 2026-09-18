@@ -1,0 +1,17 @@
+model Comment {
+    id              String        @id @default(uuid())
+    projectId       String
+    authorId        String
+    content         String
+    parentCommentId String?
+    project         Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    author          User          @relation(fields: [authorId], references: [id])
+    parent          Comment?      @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+    replies         Comment[]     @relation("CommentReplies")
+    likes           CommentLike[]
+    createdAt       DateTime      @default(now())
+    updatedAt       DateTime      @updatedAt
+
+    @@index([projectId, createdAt])
+    @@index([parentCommentId])
+}

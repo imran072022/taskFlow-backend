@@ -1,0 +1,16 @@
+model Message {
+    id                 String                 @id @default(uuid())
+    conversationId     String
+    senderId           String
+    content            String?
+    attachmentUrl      String?
+    attachmentPublicId String?
+    attachmentType     MessageAttachmentType?
+    conversation       Conversation           @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    sender             User                   @relation(fields: [senderId], references: [id])
+    createdAt          DateTime               @default(now())
+    updatedAt          DateTime               @updatedAt
+
+    @@index([conversationId, createdAt])
+    @@index([senderId])
+}

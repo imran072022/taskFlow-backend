@@ -1,0 +1,28 @@
+model User {
+    id                      String                   @id @default(uuid())
+    name                    String
+    email                   String                   @unique
+    password                String?
+    googleId                String?                  @unique
+    role                    UserRole
+    isVerified              Boolean                  @default(false)
+    isSuspended             Boolean                  @default(false)
+    profileImageUrl         String?
+    profileImagePublicId    String?
+    organization            Organization?
+    organizationMemberships OrganizationMembership[]
+    sentInvitations         OrganizationInvitation[] @relation("InvitationInviter")
+    receivedInvitations     OrganizationInvitation[] @relation("InvitationInvitee")
+    projectMemberships      ProjectMembership[]
+    assignedTasks           Task[]                   @relation("TaskAssignee")
+    comments                Comment[]
+    commentLikes            CommentLike[]
+    activityLogs            ActivityLog[]
+    managerConversations    Conversation[]           @relation("ManagerConversations")
+    ownerConversations      Conversation[]           @relation("OwnerConversations")
+    messages                Message[]
+    subscription            Subscription?
+    payments                Payment[]
+    createdAt               DateTime                 @default(now())
+    updatedAt               DateTime                 @updatedAt
+}

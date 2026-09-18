@@ -1,0 +1,17 @@
+model Payment {
+    id                      String        @id @default(uuid())
+    userId                  String
+    amount                  Int
+    currency                String
+    status                  PaymentStatus
+    type                    PaymentType
+    stripeCheckoutSessionId String?       @unique
+    stripePaymentIntentId   String?       @unique
+    stripeSubscriptionId    String?
+    user                    User          @relation(fields: [userId], references: [id])
+    createdAt               DateTime      @default(now())
+    updatedAt               DateTime      @updatedAt
+
+    @@index([userId, createdAt])
+    @@index([status])
+}

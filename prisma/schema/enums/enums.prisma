@@ -1,0 +1,64 @@
+enum UserRole {
+    ADMIN
+    OWNER
+    MEMBER
+}
+
+enum InvitationStatus {
+    REQUESTED
+    ACCEPTED
+    REJECTED
+}
+
+enum ProjectMemberRole {
+    MEMBER
+    MANAGER
+}
+
+enum TaskStatus {
+    TODO
+    IN_PROGRESS
+    COMPLETED
+    OVERDUE
+}
+
+enum ActivityAction {
+    PROJECT_CREATED
+    MEMBER_ADDED
+    MEMBER_REMOVED
+    MEMBER_PROMOTED
+    MEMBER_DEMOTED
+    TASK_CREATED
+    TASK_ASSIGNED
+    TASK_UNASSIGNED
+    TASK_STATUS_CHANGED
+}
+
+enum MessageAttachmentType {
+    IMAGE
+    PDF
+}
+
+enum SubscriptionPlan {
+    FREE
+    BASIC
+    PRO
+}
+
+enum SubscriptionStatus {
+    ACTIVE
+    CANCELLED
+    EXPIRED
+}
+
+enum PaymentType {
+    SUBSCRIPTION
+    LIFETIME
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
+    REFUNDED
+}

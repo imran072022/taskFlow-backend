@@ -1,0 +1,17 @@
+model Task {
+    id          String     @id @default(uuid())
+    projectId   String
+    title       String
+    description String?
+    status      TaskStatus @default(TODO)
+    dueDate     DateTime?
+    assigneeId  String?
+    project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    assignee    User?      @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+
+    @@index([projectId, status])
+    @@index([assigneeId])
+    @@index([dueDate, status])
+}
