@@ -20,6 +20,9 @@ if (!process.env.JWT_ACCESS_EXPIRY || !process.env.JWT_REFRESH_EXPIRY) {
     "JWT expiration times are not defined in the environment variables",
   );
 }
+if (!process.env.REDIS_USERNAME || !process.env.REDIS_PASSWORD) {
+  throw new Error("Redis credentials are missing");
+}
 
 const config = {
   database_url: process.env.DATABASE_URL,
@@ -30,6 +33,11 @@ const config = {
   jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
   jwt_access_token_expiry: process.env.JWT_ACCESS_EXPIRY as StringValue,
   jwt_refresh_token_expiry: process.env.JWT_REFRESH_EXPIRY as StringValue,
+
+  redis_username: process.env.REDIS_USERNAME,
+  redis_password: process.env.REDIS_PASSWORD,
+  redis_host: process.env.REDIS_HOST,
+  redis_port: Number(process.env.REDIS_PORT),
 };
 
 export default config;

@@ -27,3 +27,12 @@ export const registerSchema = z.object({
     role: z.enum([UserRole.OWNER, UserRole.MEMBER]),
   }),
 });
+
+export const verifyOtpSchema = z.object({
+  body: z
+    .object({
+      verificationId: z.string(),
+      otp: z.string().min(6).max(6),
+    })
+    .strict(),
+});

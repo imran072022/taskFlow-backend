@@ -1,6 +1,7 @@
 import app from "./app";
 import config from "./config";
 import { prisma } from "./lib/prisma";
+import { redisClient } from "./lib/redis";
 
 const PORT = config.port;
 
@@ -9,6 +10,12 @@ const startServer = async () => {
     // Verify database connection before starting the server
     await prisma.$connect();
     console.log("Database connected");
+
+    //Redis
+    redisClient.on("error", (err) => console.log("Redis Client Error", err));
+    await redisClient.connect();
+    console.log("Redis connected successfully");
+
     const server = app.listen(PORT, () => {
       console.log(`🚀 Server is running on port ${PORT}`);
     });

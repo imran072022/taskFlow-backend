@@ -1,6 +1,5 @@
 import type { RequestHandler } from "express";
 import type { ZodType } from "zod";
-
 export const validateRequest =
   <T>(
     schema: ZodType<T>,
@@ -11,7 +10,6 @@ export const validateRequest =
       params: req.params,
       query: req.query,
     });
-
     if (!parsed.success) {
       return next(parsed.error);
     }

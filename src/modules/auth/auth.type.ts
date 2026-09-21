@@ -1,14 +1,38 @@
 import type z from "zod";
-import type { registerSchema } from "./auth.validation";
+import type { registerSchema, verifyOtpSchema } from "./auth.validation";
+import type { UserRole } from "../../../prisma/generated/prisma/enums";
 
 export type JwtUserPayload = {
   id: string;
   name: string;
   email: string;
   role: string;
-  iat: number;
-  exp: number;
+  iat?: number;
+  exp?: number;
 };
 
-export type TRegisterPayload = z.infer<typeof registerSchema>;
-export type TRegisterPayloadLocals = { validatedData: TRegisterPayload };
+// register api types
+export type TRegisterPayload = z.infer<typeof registerSchema>["body"];
+export type TRegisterPayloadLocals = {
+  validatedData: z.infer<typeof registerSchema>;
+};
+
+// OTP related types
+export type TOtpPurpose = "REGISTER" | "FORGOT_PASSWORD";
+export type TRegisterOtpData = {
+  purpose: "REGISTER";
+  name: string;
+  email: string;
+  password: string;
+  role: UserRole;
+};
+export type TForgotPassData = {
+  purpose: "FORGOT_PASSWORD";
+  userId: string;
+};
+
+// verify otp api types
+export type TVerifyOtp = z.infer<typeof verifyOtpSchema>["body"];
+export type TVerifyOtpLocals = {
+  validatedData: z.infer<typeof verifyOtpSchema>;
+};
