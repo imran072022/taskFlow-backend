@@ -13,6 +13,11 @@ import crypto from "crypto";
 import { redisClient } from "../../lib/redis";
 import { verifyOtp } from "../../utils/verifyOtp";
 import { signToken } from "../../utils/jwt";
+import { transporter } from "../../lib/nodemailer";
+import { render } from "@react-email/render";
+import RegistrationOtpEmail from "../../email_templates/RegistrationOtp";
+import { resendClient } from "../../lib/resend";
+import { sendRegistrationOtp } from "../../utils/sendRegistrationOtp";
 
 const register = async (payload: TRegisterPayload) => {
   const { name, email, password, role } = payload;
@@ -47,7 +52,7 @@ const register = async (payload: TRegisterPayload) => {
       },
     },
   );
-
+  sendRegistrationOtp({ email, otp });
   return { verificationId };
 };
 
