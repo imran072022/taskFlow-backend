@@ -23,6 +23,9 @@ if (!process.env.JWT_ACCESS_EXPIRY || !process.env.JWT_REFRESH_EXPIRY) {
 if (!process.env.REDIS_USERNAME || !process.env.REDIS_PASSWORD) {
   throw new Error("Redis credentials are missing");
 }
+if (!process.env.GOOGLE_CLIENT_ID) {
+  throw new Error("Google client ID is missing");
+}
 
 const config = {
   database_url: process.env.DATABASE_URL,
@@ -42,6 +45,8 @@ const config = {
   smtp_user: process.env.SMTP_USER,
   smtp_password: process.env.SMTP_PASSWORD,
   resend_api_key: process.env.RESEND_API_KEY,
+
+  google_client_id: process.env.GOOGLE_CLIENT_ID,
 };
 
 export default config;

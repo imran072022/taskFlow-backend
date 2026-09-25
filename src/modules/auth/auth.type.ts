@@ -1,5 +1,10 @@
 import type z from "zod";
-import type { registerSchema, verifyOtpSchema } from "./auth.validation";
+import type {
+  googleAuthSchema,
+  loginSchema,
+  registerSchema,
+  verifyOtpSchema,
+} from "./auth.validation";
 import type { UserRole } from "../../../prisma/generated/prisma/enums";
 
 export type JwtUserPayload = {
@@ -35,4 +40,16 @@ export type TForgotPassData = {
 export type TVerifyOtp = z.infer<typeof verifyOtpSchema>["body"];
 export type TVerifyOtpLocals = {
   validatedData: z.infer<typeof verifyOtpSchema>;
+};
+
+// google login
+export type TGoogleAuthPayload = z.infer<typeof googleAuthSchema>["body"];
+export type TGoogleAuthPayloadLocals = {
+  validatedData: z.infer<typeof googleAuthSchema>;
+};
+
+// credential login api types
+export type TLoginPayload = z.infer<typeof loginSchema>["body"];
+export type TLoginPayloadLocals = {
+  validatedData: z.infer<typeof loginSchema>;
 };

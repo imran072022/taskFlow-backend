@@ -1,4 +1,4 @@
-import z from "zod";
+import z, { email } from "zod";
 import { UserRole } from "../../../prisma/generated/prisma/enums";
 export const registerSchema = z.object({
   body: z.object({
@@ -33,6 +33,22 @@ export const verifyOtpSchema = z.object({
     .object({
       verificationId: z.string(),
       otp: z.string().min(6).max(6),
+    })
+    .strict(),
+});
+
+export const googleAuthSchema = z.object({
+  body: z.object({
+    idToken: z.string(),
+    role: z.enum([UserRole.MEMBER, UserRole.OWNER]),
+  }),
+});
+
+export const loginSchema = z.object({
+  body: z
+    .object({
+      email: z.email(),
+      password: z.string(),
     })
     .strict(),
 });
