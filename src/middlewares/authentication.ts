@@ -3,7 +3,7 @@ import { AppError } from "../errors/AppError";
 import httpStatus from "http-status";
 import { verifyToken } from "../utils/jwt";
 
-import { getUserById } from "../modules/auth/auth.helper";
+import { getUserById } from "../modules/auth/auth.utils";
 import catchAsync from "../utils/catchAsync";
 import config from "../config";
 

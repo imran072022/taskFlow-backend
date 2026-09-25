@@ -23,6 +23,7 @@ model User {
     messages                Message[]
     subscription            Subscription?
     payments                Payment[]
+    refreshSession          RefreshSession?
     createdAt               DateTime                 @default(now())
     updatedAt               DateTime                 @updatedAt
 }

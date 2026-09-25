@@ -24,6 +24,7 @@ router.post(
   validateRequest(verifyOtpSchema),
   authController.verifyRegistrationOtp,
 );
+
 router.post(
   "/google",
   validateRequest(googleAuthSchema),
@@ -35,4 +36,21 @@ router.post(
   validateRequest(loginSchema),
   authController.credentialLogin,
 );
+
+router.post("/refresh-token", authController.refreshToken);
+
+router.get(
+  "/me",
+  authentication,
+  authorization(UserRole.ADMIN, UserRole.MEMBER, UserRole.OWNER),
+  authController.getMe,
+);
+
+router.post(
+  "/logout",
+  authentication,
+  authorization(UserRole.ADMIN, UserRole.MEMBER, UserRole.OWNER),
+  authController.logout,
+);
+
 export const authRoutes = router;

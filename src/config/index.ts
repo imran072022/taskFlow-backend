@@ -26,6 +26,9 @@ if (!process.env.REDIS_USERNAME || !process.env.REDIS_PASSWORD) {
 if (!process.env.GOOGLE_CLIENT_ID) {
   throw new Error("Google client ID is missing");
 }
+if (!process.env.BREVO_API_KEY) {
+  throw new Error("Brevo api key is missing");
+}
 
 const config = {
   database_url: process.env.DATABASE_URL,
@@ -44,7 +47,8 @@ const config = {
 
   smtp_user: process.env.SMTP_USER,
   smtp_password: process.env.SMTP_PASSWORD,
-  resend_api_key: process.env.RESEND_API_KEY,
+  brevo_api_key: process.env.BREVO_API_KEY,
+  brevo_sender_email: process.env.BREVO_SENDER_EMAIL,
 
   google_client_id: process.env.GOOGLE_CLIENT_ID,
 };

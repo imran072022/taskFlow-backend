@@ -14,13 +14,13 @@ import config from "../../config";
 import crypto from "crypto";
 import { redisClient } from "../../lib/redis";
 import { verifyOtp } from "../../utils/verifyOtp";
-import { signToken } from "../../utils/jwt";
-import { render } from "@react-email/render";
-import RegistrationOtpEmail from "../../email_templates/RegistrationOtp";
-import { resendClient } from "../../lib/resend";
+import { signToken, verifyToken } from "../../utils/jwt";
 import { sendRegistrationOtp } from "../../utils/sendRegistrationOtp";
 import { googleClient } from "../../lib/google";
 import type { TokenPayload } from "google-auth-library";
+import { generateAuthTokens, getUserById } from "./auth.utils";
+import { hashRefreshToken } from "../../utils/hashRefreshToken";
+import { getRefreshTokenExpiry } from "../../utils/getRefreshTokenExpiry";
 
 const credentialRegister = async (payload: TRegisterPayload) => {
   const { name, email, password, role } = payload;
@@ -87,23 +87,13 @@ const verifyRegistrationOtp = async (payload: TVerifyOtp) => {
       password: true,
     },
   });
-  const jwtPayload: JwtUserPayload = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
+
+  const tokens = await generateAuthTokens(user);
+  return {
+    user,
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
   };
-  const accessToken = signToken(
-    jwtPayload,
-    config.jwt_access_secret,
-    config.jwt_access_token_expiry,
-  );
-  const refreshToken = signToken(
-    jwtPayload,
-    config.jwt_access_secret,
-    config.jwt_refresh_token_expiry,
-  );
-  return { user, accessToken, refreshToken };
 };
 
 const google = async (payload: TGoogleAuthPayload) => {
@@ -166,26 +156,13 @@ const google = async (payload: TGoogleAuthPayload) => {
     });
   }
 
-  const jwtPayload: JwtUserPayload = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
+  const tokens = await generateAuthTokens(user);
+
+  return {
+    user,
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
   };
-
-  const accessToken = signToken(
-    jwtPayload,
-    config.jwt_access_secret,
-    config.jwt_access_token_expiry,
-  );
-
-  const refreshToken = signToken(
-    jwtPayload,
-    config.jwt_access_secret,
-    config.jwt_refresh_token_expiry,
-  );
-
-  return { user, accessToken, refreshToken };
 };
 
 const credentialLogin = async (payload: TLoginPayload) => {
@@ -215,23 +192,90 @@ const credentialLogin = async (payload: TLoginPayload) => {
     throw new AppError(httpStatus.UNAUTHORIZED, "Invalid credentials");
   }
 
+  const tokens = await generateAuthTokens(user);
+  return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
+};
+
+const refreshToken = async (refreshToken: string) => {
+  const verifiedToken = verifyToken(refreshToken, config.jwt_refresh_secret);
+  const tokenHash = hashRefreshToken(refreshToken);
+
+  const session = await prisma.refreshSession.findUnique({
+    where: {
+      tokenHash,
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  if (!session) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid refresh token");
+  }
+
+  if (session.revokedAt || session.expiresAt <= new Date()) {
+    throw new AppError(
+      httpStatus.UNAUTHORIZED,
+      "Refresh token is no longer valid",
+    );
+  }
+
+  if (verifiedToken.id !== session.userId) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid refresh token");
+  }
+  const user = session.user;
+
   const jwtPayload: JwtUserPayload = {
     id: user.id,
     name: user.name,
     email: user.email,
     role: user.role,
   };
-  const accessToken = signToken(
+
+  const newAccessToken = signToken(
     jwtPayload,
     config.jwt_access_secret,
     config.jwt_access_token_expiry,
   );
-  const refreshToken = signToken(
+
+  const newRefreshToken = signToken(
     jwtPayload,
-    config.jwt_access_secret,
+    config.jwt_refresh_secret,
     config.jwt_refresh_token_expiry,
   );
-  return { accessToken, refreshToken };
+
+  await prisma.refreshSession.update({
+    where: {
+      id: session.id,
+    },
+    data: {
+      tokenHash: hashRefreshToken(newRefreshToken),
+      expiresAt: getRefreshTokenExpiry(),
+    },
+  });
+  return {
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
+  };
+};
+
+const getMe = async (id: string) => {
+  const user = await getUserById(id);
+  return user;
+};
+
+const logout = async (refreshToken: string) => {
+  if (refreshToken) {
+    const result = await prisma.refreshSession.updateMany({
+      where: {
+        tokenHash: hashRefreshToken(refreshToken),
+      },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
+    return result;
+  }
 };
 
 export const authService = {
@@ -239,4 +283,7 @@ export const authService = {
   verifyRegistrationOtp,
   google,
   credentialLogin,
+  refreshToken,
+  getMe,
+  logout,
 };

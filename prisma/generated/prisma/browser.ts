@@ -73,6 +73,11 @@ export type Project = Prisma.ProjectModel
  */
 export type ProjectMembership = Prisma.ProjectMembershipModel
 /**
+ * Model RefreshSession
+ * 
+ */
+export type RefreshSession = Prisma.RefreshSessionModel
+/**
  * Model Subscription
  * 
  */

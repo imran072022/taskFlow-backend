@@ -62,6 +62,7 @@ export const ModelName = {
   Payment: 'Payment',
   Project: 'Project',
   ProjectMembership: 'ProjectMembership',
+  RefreshSession: 'RefreshSession',
   Subscription: 'Subscription',
   Task: 'Task',
   User: 'User'
@@ -220,6 +221,19 @@ export const ProjectMembershipScalarFieldEnum = {
 } as const
 
 export type ProjectMembershipScalarFieldEnum = (typeof ProjectMembershipScalarFieldEnum)[keyof typeof ProjectMembershipScalarFieldEnum]
+
+
+export const RefreshSessionScalarFieldEnum = {
+  id: 'id',
+  tokenHash: 'tokenHash',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RefreshSessionScalarFieldEnum = (typeof RefreshSessionScalarFieldEnum)[keyof typeof RefreshSessionScalarFieldEnum]
 
 
 export const SubscriptionScalarFieldEnum = {
