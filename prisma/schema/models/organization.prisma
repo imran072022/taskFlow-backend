@@ -1,6 +1,10 @@
 model Organization {
     id          String                   @id @default(uuid())
     name        String
+    description String
+    industry    String
+    size        OrganizationSize
+    website     String?
     ownerId     String                   @unique
     owner       User                     @relation(fields: [ownerId], references: [id])
     memberships OrganizationMembership[]

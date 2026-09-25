@@ -1,9 +1,12 @@
 import type { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import type {
+  TCreateOrgLocals,
+  TForgotPassEmailLocals,
   TGoogleAuthPayloadLocals,
   TLoginPayloadLocals,
   TRegisterPayloadLocals,
+  TResetPasswordLocals,
   TVerifyOtpLocals,
 } from "./auth.type";
 import { authService } from "./auth.service";
@@ -120,6 +123,58 @@ const logout = catchAsync(async (req: Request, res: Response) => {
     data: null,
   });
 });
+
+const completeOrganization = catchAsync(
+  async (req: Request, res: Response<unknown, TCreateOrgLocals>) => {
+    const result = await authService.completeOrganization(
+      res.locals.validatedData.body,
+      req.user.id,
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      message: "Organization created successfully",
+      data: result,
+    });
+  },
+);
+
+const forgotPassword = catchAsync(
+  async (req: Request, res: Response<unknown, TForgotPassEmailLocals>) => {
+    const { email: forgotPassEmail } = res.locals.validatedData.body;
+    const result = await authService.forgotPassword(forgotPassEmail);
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      message: "OTP sent successfully",
+      data: result,
+    });
+  },
+);
+const verifyForgotPassOtp = catchAsync(
+  async (req: Request, res: Response<unknown, TVerifyOtpLocals>) => {
+    const result = await authService.verifyForgotPassOtp(
+      res.locals.validatedData.body,
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      message: "OTO has been verified",
+      data: result,
+    });
+  },
+);
+
+const resetPassword = catchAsync(
+  async (req: Request, res: Response<unknown, TResetPasswordLocals>) => {
+    const result = await authService.resetPassword(
+      res.locals.validatedData.body,
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      message: "Password reset successfully",
+      data: result,
+    });
+  },
+);
+
 export const authController = {
   credentialRegister,
   verifyRegistrationOtp,
@@ -128,4 +183,8 @@ export const authController = {
   refreshToken,
   getMe,
   logout,
+  completeOrganization,
+  forgotPassword,
+  verifyForgotPassOtp,
+  resetPassword,
 };

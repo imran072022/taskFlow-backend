@@ -3,9 +3,12 @@ import { authController } from "./auth.controller";
 import { authentication } from "../../middlewares/authentication";
 import { authorization } from "../../middlewares/authorization";
 import {
+  createOrganizationSchema,
+  forgotPassSchema,
   googleAuthSchema,
   loginSchema,
   registerSchema,
+  resetPasswordSchema,
   verifyOtpSchema,
 } from "./auth.validation";
 import { UserRole } from "../../../prisma/generated/prisma/enums";
@@ -51,6 +54,31 @@ router.post(
   authentication,
   authorization(UserRole.ADMIN, UserRole.MEMBER, UserRole.OWNER),
   authController.logout,
+);
+
+router.post(
+  "/create-organization",
+  authentication,
+  authorization(UserRole.OWNER),
+  validateRequest(createOrganizationSchema),
+  authController.completeOrganization,
+);
+
+router.post(
+  "/forgot-password",
+  validateRequest(forgotPassSchema),
+  authController.forgotPassword,
+);
+
+router.post(
+  "/verify-reset-otp",
+  validateRequest(verifyOtpSchema),
+  authController.verifyForgotPassOtp,
+);
+router.post(
+  "/reset-password",
+  validateRequest(resetPasswordSchema),
+  authController.resetPassword,
 );
 
 export const authRoutes = router;

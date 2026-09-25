@@ -195,6 +195,23 @@ export type EnumMessageAttachmentTypeNullableWithAggregatesFilter<$PrismaModel =
   _max?: Prisma.NestedEnumMessageAttachmentTypeNullableFilter<$PrismaModel>
 }
 
+export type EnumOrganizationSizeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrganizationSize | Prisma.EnumOrganizationSizeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrganizationSizeFilter<$PrismaModel> | $Enums.OrganizationSize
+}
+
+export type EnumOrganizationSizeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrganizationSize | Prisma.EnumOrganizationSizeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrganizationSizeWithAggregatesFilter<$PrismaModel> | $Enums.OrganizationSize
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrganizationSizeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrganizationSizeFilter<$PrismaModel>
+}
+
 export type EnumInvitationStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.InvitationStatus | Prisma.EnumInvitationStatusFieldRefInput<$PrismaModel>
   in?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
@@ -561,6 +578,23 @@ export type NestedEnumMessageAttachmentTypeNullableWithAggregatesFilter<$PrismaM
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumMessageAttachmentTypeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumMessageAttachmentTypeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumOrganizationSizeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrganizationSize | Prisma.EnumOrganizationSizeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrganizationSizeFilter<$PrismaModel> | $Enums.OrganizationSize
+}
+
+export type NestedEnumOrganizationSizeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrganizationSize | Prisma.EnumOrganizationSizeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrganizationSize[] | Prisma.ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrganizationSizeWithAggregatesFilter<$PrismaModel> | $Enums.OrganizationSize
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrganizationSizeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrganizationSizeFilter<$PrismaModel>
 }
 
 export type NestedEnumInvitationStatusFilter<$PrismaModel = never> = {

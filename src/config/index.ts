@@ -34,7 +34,7 @@ const config = {
   database_url: process.env.DATABASE_URL,
   port: process.env.PORT,
   node_env: process.env.NODE_ENV,
-  bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND,
+  bcrypt_salt_round: Number(process.env.BCRYPT_SALT_ROUND),
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,
   jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
   jwt_access_token_expiry: process.env.JWT_ACCESS_EXPIRY as StringValue,

@@ -1646,6 +1646,10 @@ export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeo
 export const OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  description: 'description',
+  industry: 'industry',
+  size: 'size',
+  website: 'website',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1894,6 +1898,20 @@ export type EnumMessageAttachmentTypeFieldRefInput<$PrismaModel> = FieldRefInput
  * Reference to a field of type 'MessageAttachmentType[]'
  */
 export type ListEnumMessageAttachmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MessageAttachmentType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OrganizationSize'
+ */
+export type EnumOrganizationSizeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganizationSize'>
+    
+
+
+/**
+ * Reference to a field of type 'OrganizationSize[]'
+ */
+export type ListEnumOrganizationSizeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganizationSize[]'>
     
 
 

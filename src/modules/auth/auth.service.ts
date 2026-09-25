@@ -3,10 +3,15 @@ import { AppError } from "../../errors/AppError";
 import { prisma } from "../../lib/prisma";
 import type {
   JwtUserPayload,
+  TCreateOrg,
+  TForgotPassEmail,
+  TForgotPasswordOtpData,
   TGoogleAuthPayload,
   TLoginPayload,
   TRegisterOtpData,
   TRegisterPayload,
+  TResetPassPayload,
+  TResetPassword,
   TVerifyOtp,
 } from "./auth.type";
 import httpStatus from "http-status";
@@ -15,12 +20,16 @@ import crypto from "crypto";
 import { redisClient } from "../../lib/redis";
 import { verifyOtp } from "../../utils/verifyOtp";
 import { signToken, verifyToken } from "../../utils/jwt";
-import { sendRegistrationOtp } from "../../utils/sendRegistrationOtp";
+import { sendEmail } from "../../utils/sendEmail";
 import { googleClient } from "../../lib/google";
 import type { TokenPayload } from "google-auth-library";
 import { generateAuthTokens, getUserById } from "./auth.utils";
 import { hashRefreshToken } from "../../utils/hashRefreshToken";
 import { getRefreshTokenExpiry } from "../../utils/getRefreshTokenExpiry";
+import jwt from "jsonwebtoken";
+import ForgotPasswordOtpEmail from "../../email_templates/ForgotPassOtpEmail";
+import { render } from "@react-email/render";
+import RegistrationOtpEmail from "../../email_templates/RegistrationOtpEmail";
 
 const credentialRegister = async (payload: TRegisterPayload) => {
   const { name, email, password, role } = payload;
@@ -43,10 +52,7 @@ const credentialRegister = async (payload: TRegisterPayload) => {
   const verificationId = crypto.randomUUID();
   const otp = crypto.randomInt(100000, 1000000);
 
-  const hashedPassword = await bcrypt.hash(
-    password,
-    Number(config.bcrypt_salt_round),
-  );
+  const hashedPassword = await bcrypt.hash(password, config.bcrypt_salt_round);
   const registerOtpData: TRegisterOtpData = {
     purpose: "REGISTER",
     name,
@@ -65,23 +71,25 @@ const credentialRegister = async (payload: TRegisterPayload) => {
       },
     },
   );
-  sendRegistrationOtp({ email, otp });
+  const html = await render(RegistrationOtpEmail({ otp }));
+  sendEmail({ to: email, subject: "Password reset OTP", html });
   return { verificationId };
 };
 
 const verifyRegistrationOtp = async (payload: TVerifyOtp) => {
   const otpData = await verifyOtp(payload);
-  const { name, email, password, role, purpose } = otpData;
 
-  if (purpose !== "REGISTER") {
+  if (otpData.purpose !== "REGISTER") {
     throw new AppError(httpStatus.BAD_REQUEST, "Invalid verification purpose");
   }
+  const { name, email, password, role } = otpData;
   const user = await prisma.user.create({
     data: {
       name,
       email,
       password,
       role,
+      isVerified: true,
     },
     omit: {
       password: true,
@@ -278,6 +286,134 @@ const logout = async (refreshToken: string) => {
   }
 };
 
+// onboarding - create organization
+const completeOrganization = async (payload: TCreateOrg, userId: string) => {
+  const { name, description, industry, size, website } = payload;
+  const result = await prisma.organization.create({
+    data: {
+      name,
+      description,
+      industry,
+      size,
+      ...(website !== undefined && { website }),
+      ownerId: userId,
+    },
+  });
+  return result;
+};
+
+const forgotPassword = async (email: TForgotPassEmail) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  if (user.googleId && !user.password) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      "This account was registered with Google. Please continue with Google.",
+    );
+  }
+
+  const verificationId = crypto.randomUUID();
+  const otp = crypto.randomInt(100000, 1000000);
+
+  const forgotPassData: TForgotPasswordOtpData = {
+    purpose: "FORGOT_PASSWORD",
+    userId: user.id,
+    otp,
+  };
+
+  await redisClient.set(
+    `otp:${verificationId}`,
+    JSON.stringify(forgotPassData),
+    {
+      expiration: {
+        type: "EX",
+        value: 5 * 60,
+      },
+    },
+  );
+  const html = await render(ForgotPasswordOtpEmail({ otp }));
+  sendEmail({ to: email, subject: "Password reset OTP", html });
+
+  return { verificationId };
+};
+
+const verifyForgotPassOtp = async (payload: TVerifyOtp) => {
+  const otpData = await verifyOtp(payload);
+
+  if (otpData.purpose !== "FORGOT_PASSWORD") {
+    throw new AppError(httpStatus.BAD_REQUEST, "Invalid verification purpose");
+  }
+  const resetPassPayload: TResetPassPayload = {
+    id: otpData.userId,
+    purpose: "RESET_PASSWORD",
+  };
+  const resetPassToken = jwt.sign(resetPassPayload, config.jwt_access_secret, {
+    expiresIn: "5m",
+  });
+  return { resetPassToken };
+};
+
+const resetPassword = async (payload: TResetPassword) => {
+  const { resetToken, password: newPassword } = payload;
+  const decodedToken = jwt.verify(
+    resetToken,
+    config.jwt_access_secret,
+  ) as TResetPassPayload;
+  if (decodedToken.purpose !== "RESET_PASSWORD") {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid password reset token");
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      id: decodedToken.id,
+    },
+    select: {
+      id: true,
+      password: true,
+    },
+  });
+  if (!user || !user.password) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  const isSamePassword = await bcrypt.compare(newPassword, user.password);
+  if (isSamePassword) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "New password must be different from your current password",
+    );
+  }
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    config.bcrypt_salt_round,
+  );
+  await prisma.$transaction(async (tx) => {
+    await tx.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    await tx.refreshSession.updateMany({
+      where: {
+        userId: decodedToken.id,
+      },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
+  });
+};
+
 export const authService = {
   credentialRegister,
   verifyRegistrationOtp,
@@ -286,4 +422,8 @@ export const authService = {
   refreshToken,
   getMe,
   logout,
+  completeOrganization,
+  forgotPassword,
+  verifyForgotPassOtp,
+  resetPassword,
 };

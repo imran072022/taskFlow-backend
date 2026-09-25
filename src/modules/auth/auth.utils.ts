@@ -21,10 +21,22 @@ export const getUserById = async (id: string) => {
       isVerified: true,
       isSuspended: true,
       createdAt: true,
+      organization: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
   });
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  if (!user.isVerified || user.isSuspended) {
+    throw new AppError(
+      httpStatus.UNAUTHORIZED,
+      "You are unauthorized to do this",
+    );
   }
 
   return user;

@@ -18,6 +18,17 @@ export const UserRole = {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const OrganizationSize = {
+  SOLO: 'SOLO',
+  TWO_TO_TEN: 'TWO_TO_TEN',
+  ELEVEN_TO_FIFTY: 'ELEVEN_TO_FIFTY',
+  FIFTY_ONE_TO_TWO_HUNDRED: 'FIFTY_ONE_TO_TWO_HUNDRED',
+  TWO_HUNDRED_PLUS: 'TWO_HUNDRED_PLUS'
+} as const
+
+export type OrganizationSize = (typeof OrganizationSize)[keyof typeof OrganizationSize]
+
+
 export const InvitationStatus = {
   REQUESTED: 'REQUESTED',
   ACCEPTED: 'ACCEPTED',
