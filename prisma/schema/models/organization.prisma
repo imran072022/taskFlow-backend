@@ -1,15 +1,17 @@
 model Organization {
-    id          String                   @id @default(uuid())
-    name        String
-    description String
-    industry    String
-    size        OrganizationSize
-    website     String?
-    ownerId     String                   @unique
-    owner       User                     @relation(fields: [ownerId], references: [id])
-    memberships OrganizationMembership[]
-    invitations OrganizationInvitation[]
-    projects    Project[]
-    createdAt   DateTime                 @default(now())
-    updatedAt   DateTime                 @updatedAt
+    id           String                   @id @default(uuid())
+    name         String
+    description  String
+    industry     String
+    size         OrganizationSize
+    website      String?
+    ownerId      String                   @unique
+    owner        User                     @relation(fields: [ownerId], references: [id])
+    subscription Subscription?
+    payments     Payment[]
+    memberships  OrganizationMembership[]
+    invitations  OrganizationInvitation[]
+    projects     Project[]
+    createdAt    DateTime                 @default(now())
+    updatedAt    DateTime                 @updatedAt
 }

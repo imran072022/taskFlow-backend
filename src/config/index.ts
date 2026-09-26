@@ -29,11 +29,15 @@ if (!process.env.GOOGLE_CLIENT_ID) {
 if (!process.env.BREVO_API_KEY) {
   throw new Error("Brevo api key is missing");
 }
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("Stripe secret key is missing");
+}
 
 const config = {
   database_url: process.env.DATABASE_URL,
   port: process.env.PORT,
   node_env: process.env.NODE_ENV,
+  frontend_url: process.env.FRONTEND_URL,
   bcrypt_salt_round: Number(process.env.BCRYPT_SALT_ROUND),
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,
   jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
@@ -51,6 +55,13 @@ const config = {
   brevo_sender_email: process.env.BREVO_SENDER_EMAIL,
 
   google_client_id: process.env.GOOGLE_CLIENT_ID,
+
+  stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+  stripe_basic_monthly_price_id: process.env.STRIPE_BASIC_MONTHLY_PRICE_ID,
+  stripe_basic_yearly_price_id: process.env.STRIPE_BASIC_YEARLY_PRICE_ID,
+  stripe_pro_monthly_price_id: process.env.STRIPE_PRO_MONTHLY_PRICE_ID,
+  stripe_pro_yearly_price_id: process.env.STRIPE_PRO_YEARLY_PRICE_ID,
+  stripe_lifetime_price_id: process.env.STRIPE_LIFETIME_PRICE_ID,
 };
 
 export default config;

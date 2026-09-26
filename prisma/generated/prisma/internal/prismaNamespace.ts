@@ -1684,7 +1684,7 @@ export type OrganizationMembershipScalarFieldEnum = (typeof OrganizationMembersh
 
 export const PaymentScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  organizationId: 'organizationId',
   amount: 'amount',
   currency: 'currency',
   status: 'status',
@@ -1738,9 +1738,10 @@ export type RefreshSessionScalarFieldEnum = (typeof RefreshSessionScalarFieldEnu
 
 export const SubscriptionScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  organizationId: 'organizationId',
   plan: 'plan',
   status: 'status',
+  billingInterval: 'billingInterval',
   stripeCustomerId: 'stripeCustomerId',
   stripeSubscriptionId: 'stripeSubscriptionId',
   currentPeriodEnd: 'currentPeriodEnd',
@@ -2010,6 +2011,20 @@ export type EnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'SubscriptionStatus[]'
  */
 export type ListEnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingInterval'
+ */
+export type EnumBillingIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingInterval'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingInterval[]'
+ */
+export type ListEnumBillingIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingInterval[]'>
     
 
 

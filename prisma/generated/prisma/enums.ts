@@ -82,7 +82,8 @@ export type MessageAttachmentType = (typeof MessageAttachmentType)[keyof typeof 
 export const SubscriptionPlan = {
   FREE: 'FREE',
   BASIC: 'BASIC',
-  PRO: 'PRO'
+  PRO: 'PRO',
+  LIFETIME: 'LIFETIME'
 } as const
 
 export type SubscriptionPlan = (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan]
@@ -95,6 +96,14 @@ export const SubscriptionStatus = {
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const BillingInterval = {
+  MONTH: 'MONTH',
+  YEAR: 'YEAR'
+} as const
+
+export type BillingInterval = (typeof BillingInterval)[keyof typeof BillingInterval]
 
 
 export const PaymentType = {

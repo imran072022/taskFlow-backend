@@ -21,8 +21,6 @@ model User {
     managerConversations    Conversation[]           @relation("ManagerConversations")
     ownerConversations      Conversation[]           @relation("OwnerConversations")
     messages                Message[]
-    subscription            Subscription?
-    payments                Payment[]
     refreshSession          RefreshSession?
     createdAt               DateTime                 @default(now())
     updatedAt               DateTime                 @updatedAt

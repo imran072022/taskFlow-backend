@@ -51,12 +51,18 @@ enum SubscriptionPlan {
     FREE
     BASIC
     PRO
+    LIFETIME
 }
 
 enum SubscriptionStatus {
     ACTIVE
     CANCELLED
     EXPIRED
+}
+
+enum BillingInterval {
+    MONTH
+    YEAR
 }
 
 enum PaymentType {

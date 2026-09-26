@@ -250,8 +250,6 @@ export type UserWhereInput = {
   managerConversations?: Prisma.ConversationListRelationFilter
   ownerConversations?: Prisma.ConversationListRelationFilter
   messages?: Prisma.MessageListRelationFilter
-  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
-  payments?: Prisma.PaymentListRelationFilter
   refreshSession?: Prisma.XOR<Prisma.RefreshSessionNullableScalarRelationFilter, Prisma.RefreshSessionWhereInput> | null
 }
 
@@ -280,8 +278,6 @@ export type UserOrderByWithRelationInput = {
   managerConversations?: Prisma.ConversationOrderByRelationAggregateInput
   ownerConversations?: Prisma.ConversationOrderByRelationAggregateInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
-  subscription?: Prisma.SubscriptionOrderByWithRelationInput
-  payments?: Prisma.PaymentOrderByRelationAggregateInput
   refreshSession?: Prisma.RefreshSessionOrderByWithRelationInput
 }
 
@@ -313,8 +309,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   managerConversations?: Prisma.ConversationListRelationFilter
   ownerConversations?: Prisma.ConversationListRelationFilter
   messages?: Prisma.MessageListRelationFilter
-  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
-  payments?: Prisma.PaymentListRelationFilter
   refreshSession?: Prisma.XOR<Prisma.RefreshSessionNullableScalarRelationFilter, Prisma.RefreshSessionWhereInput> | null
 }, "id" | "email" | "googleId">
 
@@ -379,8 +373,6 @@ export type UserCreateInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -409,8 +401,6 @@ export type UserUncheckedCreateInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -439,8 +429,6 @@ export type UserUpdateInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -469,8 +457,6 @@ export type UserUncheckedUpdateInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -716,20 +702,6 @@ export type UserUpdateOneRequiredWithoutOrganizationMembershipsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrganizationMembershipsInput, Prisma.UserUpdateWithoutOrganizationMembershipsInput>, Prisma.UserUncheckedUpdateWithoutOrganizationMembershipsInput>
 }
 
-export type UserCreateNestedOneWithoutPaymentsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutPaymentsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
-  upsert?: Prisma.UserUpsertWithoutPaymentsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentsInput, Prisma.UserUpdateWithoutPaymentsInput>, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
-}
-
 export type UserCreateNestedOneWithoutProjectMembershipsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutProjectMembershipsInput, Prisma.UserUncheckedCreateWithoutProjectMembershipsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutProjectMembershipsInput
@@ -756,20 +728,6 @@ export type UserUpdateOneRequiredWithoutRefreshSessionNestedInput = {
   upsert?: Prisma.UserUpsertWithoutRefreshSessionInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshSessionInput, Prisma.UserUpdateWithoutRefreshSessionInput>, Prisma.UserUncheckedUpdateWithoutRefreshSessionInput>
-}
-
-export type UserCreateNestedOneWithoutSubscriptionInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutSubscriptionNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionInput
-  upsert?: Prisma.UserUpsertWithoutSubscriptionInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubscriptionInput, Prisma.UserUpdateWithoutSubscriptionInput>, Prisma.UserUncheckedUpdateWithoutSubscriptionInput>
 }
 
 export type UserCreateNestedOneWithoutAssignedTasksInput = {
@@ -820,8 +778,6 @@ export type UserCreateWithoutActivityLogsInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -849,8 +805,6 @@ export type UserUncheckedCreateWithoutActivityLogsInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -894,8 +848,6 @@ export type UserUpdateWithoutActivityLogsInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -923,8 +875,6 @@ export type UserUncheckedUpdateWithoutActivityLogsInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -952,8 +902,6 @@ export type UserCreateWithoutCommentsInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -981,8 +929,6 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1026,8 +972,6 @@ export type UserUpdateWithoutCommentsInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1055,8 +999,6 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1084,8 +1026,6 @@ export type UserCreateWithoutCommentLikesInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -1113,8 +1053,6 @@ export type UserUncheckedCreateWithoutCommentLikesInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1158,8 +1096,6 @@ export type UserUpdateWithoutCommentLikesInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1187,8 +1123,6 @@ export type UserUncheckedUpdateWithoutCommentLikesInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1216,8 +1150,6 @@ export type UserCreateWithoutManagerConversationsInput = {
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -1245,8 +1177,6 @@ export type UserUncheckedCreateWithoutManagerConversationsInput = {
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1279,8 +1209,6 @@ export type UserCreateWithoutOwnerConversationsInput = {
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -1308,8 +1236,6 @@ export type UserUncheckedCreateWithoutOwnerConversationsInput = {
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1353,8 +1279,6 @@ export type UserUpdateWithoutManagerConversationsInput = {
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1382,8 +1306,6 @@ export type UserUncheckedUpdateWithoutManagerConversationsInput = {
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1422,8 +1344,6 @@ export type UserUpdateWithoutOwnerConversationsInput = {
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1451,8 +1371,6 @@ export type UserUncheckedUpdateWithoutOwnerConversationsInput = {
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1480,8 +1398,6 @@ export type UserCreateWithoutMessagesInput = {
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -1509,8 +1425,6 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1554,8 +1468,6 @@ export type UserUpdateWithoutMessagesInput = {
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1583,8 +1495,6 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1612,8 +1522,6 @@ export type UserCreateWithoutOrganizationInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -1641,8 +1549,6 @@ export type UserUncheckedCreateWithoutOrganizationInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1686,8 +1592,6 @@ export type UserUpdateWithoutOrganizationInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1715,8 +1619,6 @@ export type UserUncheckedUpdateWithoutOrganizationInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1744,8 +1646,6 @@ export type UserCreateWithoutSentInvitationsInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -1773,8 +1673,6 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1807,8 +1705,6 @@ export type UserCreateWithoutReceivedInvitationsInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -1836,8 +1732,6 @@ export type UserUncheckedCreateWithoutReceivedInvitationsInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1881,8 +1775,6 @@ export type UserUpdateWithoutSentInvitationsInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1910,8 +1802,6 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1950,8 +1840,6 @@ export type UserUpdateWithoutReceivedInvitationsInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -1979,8 +1867,6 @@ export type UserUncheckedUpdateWithoutReceivedInvitationsInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -2008,8 +1894,6 @@ export type UserCreateWithoutOrganizationMembershipsInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -2037,8 +1921,6 @@ export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -2082,8 +1964,6 @@ export type UserUpdateWithoutOrganizationMembershipsInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -2111,140 +1991,6 @@ export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
-  refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
-}
-
-export type UserCreateWithoutPaymentsInput = {
-  id?: string
-  name: string
-  email: string
-  password?: string | null
-  googleId?: string | null
-  role: $Enums.UserRole
-  isVerified?: boolean
-  isSuspended?: boolean
-  profileImageUrl?: string | null
-  profileImagePublicId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  organization?: Prisma.OrganizationCreateNestedOneWithoutOwnerInput
-  organizationMemberships?: Prisma.OrganizationMembershipCreateNestedManyWithoutUserInput
-  sentInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutInviterInput
-  receivedInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutInviteeInput
-  projectMemberships?: Prisma.ProjectMembershipCreateNestedManyWithoutUserInput
-  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
-  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
-  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
-  managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
-  ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
-  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutPaymentsInput = {
-  id?: string
-  name: string
-  email: string
-  password?: string | null
-  googleId?: string | null
-  role: $Enums.UserRole
-  isVerified?: boolean
-  isSuspended?: boolean
-  profileImageUrl?: string | null
-  profileImagePublicId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  organization?: Prisma.OrganizationUncheckedCreateNestedOneWithoutOwnerInput
-  organizationMemberships?: Prisma.OrganizationMembershipUncheckedCreateNestedManyWithoutUserInput
-  sentInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutInviterInput
-  receivedInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutInviteeInput
-  projectMemberships?: Prisma.ProjectMembershipUncheckedCreateNestedManyWithoutUserInput
-  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
-  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
-  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
-  managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
-  ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
-  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutPaymentsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-}
-
-export type UserUpsertWithoutPaymentsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutPaymentsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
-}
-
-export type UserUpdateWithoutPaymentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isSuspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profileImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneWithoutOwnerNestedInput
-  organizationMemberships?: Prisma.OrganizationMembershipUpdateManyWithoutUserNestedInput
-  sentInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutInviterNestedInput
-  receivedInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutInviteeNestedInput
-  projectMemberships?: Prisma.ProjectMembershipUpdateManyWithoutUserNestedInput
-  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
-  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
-  activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
-  managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
-  ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
-  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutPaymentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isSuspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profileImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUncheckedUpdateOneWithoutOwnerNestedInput
-  organizationMemberships?: Prisma.OrganizationMembershipUncheckedUpdateManyWithoutUserNestedInput
-  sentInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutInviterNestedInput
-  receivedInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutInviteeNestedInput
-  projectMemberships?: Prisma.ProjectMembershipUncheckedUpdateManyWithoutUserNestedInput
-  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
-  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
-  managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
-  ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
-  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -2272,8 +2018,6 @@ export type UserCreateWithoutProjectMembershipsInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -2301,8 +2045,6 @@ export type UserUncheckedCreateWithoutProjectMembershipsInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -2346,8 +2088,6 @@ export type UserUpdateWithoutProjectMembershipsInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -2375,8 +2115,6 @@ export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -2405,8 +2143,6 @@ export type UserCreateWithoutRefreshSessionInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRefreshSessionInput = {
@@ -2434,8 +2170,6 @@ export type UserUncheckedCreateWithoutRefreshSessionInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRefreshSessionInput = {
@@ -2479,8 +2213,6 @@ export type UserUpdateWithoutRefreshSessionInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshSessionInput = {
@@ -2508,140 +2240,6 @@ export type UserUncheckedUpdateWithoutRefreshSessionInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutSubscriptionInput = {
-  id?: string
-  name: string
-  email: string
-  password?: string | null
-  googleId?: string | null
-  role: $Enums.UserRole
-  isVerified?: boolean
-  isSuspended?: boolean
-  profileImageUrl?: string | null
-  profileImagePublicId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  organization?: Prisma.OrganizationCreateNestedOneWithoutOwnerInput
-  organizationMemberships?: Prisma.OrganizationMembershipCreateNestedManyWithoutUserInput
-  sentInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutInviterInput
-  receivedInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutInviteeInput
-  projectMemberships?: Prisma.ProjectMembershipCreateNestedManyWithoutUserInput
-  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
-  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
-  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
-  managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
-  ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
-  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
-  refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutSubscriptionInput = {
-  id?: string
-  name: string
-  email: string
-  password?: string | null
-  googleId?: string | null
-  role: $Enums.UserRole
-  isVerified?: boolean
-  isSuspended?: boolean
-  profileImageUrl?: string | null
-  profileImagePublicId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  organization?: Prisma.OrganizationUncheckedCreateNestedOneWithoutOwnerInput
-  organizationMemberships?: Prisma.OrganizationMembershipUncheckedCreateNestedManyWithoutUserInput
-  sentInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutInviterInput
-  receivedInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutInviteeInput
-  projectMemberships?: Prisma.ProjectMembershipUncheckedCreateNestedManyWithoutUserInput
-  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
-  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
-  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
-  managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
-  ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
-  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
-  refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutSubscriptionInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
-}
-
-export type UserUpsertWithoutSubscriptionInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionInput, Prisma.UserUncheckedUpdateWithoutSubscriptionInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutSubscriptionInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionInput, Prisma.UserUncheckedUpdateWithoutSubscriptionInput>
-}
-
-export type UserUpdateWithoutSubscriptionInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isSuspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profileImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneWithoutOwnerNestedInput
-  organizationMemberships?: Prisma.OrganizationMembershipUpdateManyWithoutUserNestedInput
-  sentInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutInviterNestedInput
-  receivedInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutInviteeNestedInput
-  projectMemberships?: Prisma.ProjectMembershipUpdateManyWithoutUserNestedInput
-  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
-  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
-  activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
-  managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
-  ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
-  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
-  refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutSubscriptionInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isSuspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profileImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUncheckedUpdateOneWithoutOwnerNestedInput
-  organizationMemberships?: Prisma.OrganizationMembershipUncheckedUpdateManyWithoutUserNestedInput
-  sentInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutInviterNestedInput
-  receivedInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutInviteeNestedInput
-  projectMemberships?: Prisma.ProjectMembershipUncheckedUpdateManyWithoutUserNestedInput
-  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
-  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
-  managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
-  ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
-  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
-  refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssignedTasksInput = {
@@ -2668,8 +2266,6 @@ export type UserCreateWithoutAssignedTasksInput = {
   managerConversations?: Prisma.ConversationCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionCreateNestedOneWithoutUserInput
 }
 
@@ -2697,8 +2293,6 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   managerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutManagerInput
   ownerConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   refreshSession?: Prisma.RefreshSessionUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -2742,8 +2336,6 @@ export type UserUpdateWithoutAssignedTasksInput = {
   managerConversations?: Prisma.ConversationUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUpdateOneWithoutUserNestedInput
 }
 
@@ -2771,8 +2363,6 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   managerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutManagerNestedInput
   ownerConversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   refreshSession?: Prisma.RefreshSessionUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -2793,7 +2383,6 @@ export type UserCountOutputType = {
   managerConversations: number
   ownerConversations: number
   messages: number
-  payments: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2808,7 +2397,6 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   managerConversations?: boolean | UserCountOutputTypeCountManagerConversationsArgs
   ownerConversations?: boolean | UserCountOutputTypeCountOwnerConversationsArgs
   messages?: boolean | UserCountOutputTypeCountMessagesArgs
-  payments?: boolean | UserCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -2898,13 +2486,6 @@ export type UserCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.MessageWhereInput
 }
 
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PaymentWhereInput
-}
-
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2931,8 +2512,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   managerConversations?: boolean | Prisma.User$managerConversationsArgs<ExtArgs>
   ownerConversations?: boolean | Prisma.User$ownerConversationsArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
-  subscription?: boolean | Prisma.User$subscriptionArgs<ExtArgs>
-  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   refreshSession?: boolean | Prisma.User$refreshSessionArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -2996,8 +2575,6 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   managerConversations?: boolean | Prisma.User$managerConversationsArgs<ExtArgs>
   ownerConversations?: boolean | Prisma.User$ownerConversationsArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
-  subscription?: boolean | Prisma.User$subscriptionArgs<ExtArgs>
-  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   refreshSession?: boolean | Prisma.User$refreshSessionArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -3019,8 +2596,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     managerConversations: Prisma.$ConversationPayload<ExtArgs>[]
     ownerConversations: Prisma.$ConversationPayload<ExtArgs>[]
     messages: Prisma.$MessagePayload<ExtArgs>[]
-    subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
-    payments: Prisma.$PaymentPayload<ExtArgs>[]
     refreshSession: Prisma.$RefreshSessionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -3442,8 +3017,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   managerConversations<T extends Prisma.User$managerConversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managerConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownerConversations<T extends Prisma.User$ownerConversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messages<T extends Prisma.User$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  subscription<T extends Prisma.User$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshSession<T extends Prisma.User$refreshSessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshSessionArgs<ExtArgs>>): Prisma.Prisma__RefreshSessionClient<runtime.Types.Result.GetResult<Prisma.$RefreshSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4159,49 +3732,6 @@ export type User$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
-}
-
-/**
- * User.subscription
- */
-export type User$subscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Subscription
-   */
-  select?: Prisma.SubscriptionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Subscription
-   */
-  omit?: Prisma.SubscriptionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SubscriptionInclude<ExtArgs> | null
-  where?: Prisma.SubscriptionWhereInput
-}
-
-/**
- * User.payments
- */
-export type User$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Payment
-   */
-  select?: Prisma.PaymentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Payment
-   */
-  omit?: Prisma.PaymentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PaymentInclude<ExtArgs> | null
-  where?: Prisma.PaymentWhereInput
-  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
-  cursor?: Prisma.PaymentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**
