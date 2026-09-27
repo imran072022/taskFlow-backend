@@ -32,6 +32,9 @@ if (!process.env.BREVO_API_KEY) {
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("Stripe secret key is missing");
 }
+if (!process.env.STRIPE_WEBHOOK_SECRET) {
+  throw new Error("Stripe webhook secret is missing");
+}
 
 const config = {
   database_url: process.env.DATABASE_URL,
@@ -57,6 +60,7 @@ const config = {
   google_client_id: process.env.GOOGLE_CLIENT_ID,
 
   stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+  stripe_webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
   stripe_basic_monthly_price_id: process.env.STRIPE_BASIC_MONTHLY_PRICE_ID,
   stripe_basic_yearly_price_id: process.env.STRIPE_BASIC_YEARLY_PRICE_ID,
   stripe_pro_monthly_price_id: process.env.STRIPE_PRO_MONTHLY_PRICE_ID,

@@ -6,8 +6,14 @@ import { notFound } from "./middlewares/notFound";
 import { authRoutes } from "./modules/auth/auth.route";
 import { globalErrorHandler } from "./errors/globalErrorHandler";
 import { paymentRoutes } from "./modules/payment/payment.route";
+import { paymentsController } from "./modules/payment/payment.controller";
 
 const app: Application = express();
+app.post(
+  "/api/v1/payments/webhook",
+  express.raw({ type: "application/json" }),
+  paymentsController.handleWebhook,
+);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cookieParser());

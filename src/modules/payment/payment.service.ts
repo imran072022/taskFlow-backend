@@ -7,9 +7,14 @@ import { prisma } from "../../lib/prisma";
 import { PLANS } from "./payment.constants";
 import type { TSelectPlan } from "./payment.type";
 import httpStatus from "http-status";
-import { getStripePriceId, validatePlanChange } from "./payment.utils";
+import {
+  getStripePriceId,
+  handleCheckoutSessionCompleted,
+  validatePlanChange,
+} from "./payment.utils";
 import { stripe } from "../../lib/stripe";
 import config from "../../config";
+import type Stripe from "stripe";
 
 const getPlans = async () => {
   return PLANS;
@@ -116,7 +121,17 @@ const selectPlans = async (userId: string, payload: TSelectPlan) => {
   };
 };
 
+const handleStripeWebhook = async (event: Stripe.Event) => {
+  switch (event.type) {
+    case "checkout.session.completed":
+      return handleCheckoutSessionCompleted(event);
+    default:
+      return;
+  }
+};
+
 export const paymentsService = {
   getPlans,
   selectPlans,
+  handleStripeWebhook,
 };
