@@ -10,6 +10,8 @@ import httpStatus from "http-status";
 import {
   getStripePriceId,
   handleCheckoutSessionCompleted,
+  handleInvoicePaid,
+  handleInvoicePaymentFailed,
   validatePlanChange,
 } from "./payment.utils";
 import { stripe } from "../../lib/stripe";
@@ -39,7 +41,7 @@ const selectPlans = async (userId: string, payload: TSelectPlan) => {
   if (!organization) {
     throw new AppError(httpStatus.NOT_FOUND, "Organization not found");
   }
-  validatePlanChange(organization.subscription, plan);
+  validatePlanChange(organization.subscription, plan); // not for first time plan selection
   if (plan === SubscriptionPlan.FREE) {
     const subscription = await prisma.subscription.upsert({
       where: {
@@ -125,6 +127,10 @@ const handleStripeWebhook = async (event: Stripe.Event) => {
   switch (event.type) {
     case "checkout.session.completed":
       return handleCheckoutSessionCompleted(event);
+    case "invoice.paid":
+      return handleInvoicePaid(event);
+    case "invoice.payment_failed":
+      return handleInvoicePaymentFailed(event);
     default:
       return;
   }

@@ -12,6 +12,7 @@ import { AppError } from "../../errors/AppError";
 import type { TSelectPlan } from "./payment.type";
 import httpStatus from "http-status";
 import { prisma } from "../../lib/prisma";
+import { stripe } from "../../lib/stripe";
 
 export const getStripePriceId = (payload: TSelectPlan) => {
   const { plan, billingInterval } = payload;
@@ -31,7 +32,7 @@ export const getStripePriceId = (payload: TSelectPlan) => {
   }
   return null;
 };
-
+// this util is for handling not-first time subscribing
 export const validatePlanChange = (
   currentSubscription: Subscription | null,
   newPlan: SubscriptionPlan,
@@ -89,7 +90,7 @@ export const validatePlanChange = (
 export const handleCheckoutSessionCompleted = async (event: Stripe.Event) => {
   const session = event.data.object as Stripe.Checkout.Session;
 
-  const { organizationId, plan, billingInterval } = session.metadata ?? {};
+  const { organizationId, plan } = session.metadata ?? {};
 
   if (!organizationId || !plan) {
     throw new AppError(
@@ -157,39 +158,203 @@ export const handleCheckoutSessionCompleted = async (event: Stripe.Event) => {
 
     return;
   }
+};
 
-  // Basic / Pro branch
-  if (plan === SubscriptionPlan.BASIC || plan === SubscriptionPlan.PRO) {
-    if (session.mode !== "subscription") {
+export const handleInvoicePaid = async (event: Stripe.Event) => {
+  const invoice = event.data.object as Stripe.Invoice;
+
+  const subscriptionDetails = invoice.parent?.subscription_details;
+  if (!subscriptionDetails) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Missing subscription details in invoice",
+    );
+  }
+  const { organizationId, plan, billingInterval } =
+    subscriptionDetails.metadata ?? {};
+  if (!organizationId || !plan || !billingInterval) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Missing subscription metadata");
+  }
+
+  if (plan !== SubscriptionPlan.BASIC && plan !== SubscriptionPlan.PRO) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Invalid plan for recurring invoice",
+    );
+  }
+
+  const stripeCustomerId =
+    typeof invoice.customer === "string" ? invoice.customer : null;
+  if (!stripeCustomerId) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Missing Stripe customer ID");
+  }
+
+  const stripeSubscriptionId =
+    typeof subscriptionDetails.subscription === "string"
+      ? subscriptionDetails.subscription
+      : null;
+  if (!stripeSubscriptionId) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Missing Stripe subscription ID",
+    );
+  }
+  const subscriptionLine = invoice.lines.data.find(
+    (line) =>
+      line.parent?.subscription_item_details?.subscription ===
+      stripeSubscriptionId,
+  );
+
+  if (!subscriptionLine?.period) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Missing subscription line period",
+    );
+  }
+  const currentPeriodEnd = new Date(subscriptionLine.period.end * 1000);
+
+  const subscription = await prisma.subscription.findUnique({
+    where: {
+      stripeSubscriptionId,
+    },
+  });
+
+  // Subscription not available
+  if (!subscription) {
+    // Recurring payment,  throw
+    if (invoice.billing_reason !== "subscription_create") {
       throw new AppError(
-        httpStatus.BAD_REQUEST,
-        "Invalid checkout mode for recurring plan",
+        httpStatus.NOT_FOUND,
+        "Subscription record not found for recurring invoice",
       );
     }
+    // First time payment, then create records
+    await prisma.$transaction([
+      prisma.payment.create({
+        data: {
+          organizationId,
+          amount: invoice.amount_paid,
+          currency: invoice.currency,
+          status: PaymentStatus.COMPLETED,
+          type: PaymentType.SUBSCRIPTION,
+          stripeInvoiceId: invoice.id,
+          stripeSubscriptionId,
+        },
+      }),
 
-    if (!billingInterval) {
-      throw new AppError(httpStatus.BAD_REQUEST, "Missing billing interval");
-    }
+      prisma.subscription.upsert({
+        where: {
+          organizationId,
+        },
+        create: {
+          organizationId,
+          plan: plan as SubscriptionPlan,
+          billingInterval: billingInterval as BillingInterval,
+          status: SubscriptionStatus.ACTIVE,
+          stripeCustomerId,
+          stripeSubscriptionId,
+          currentPeriodEnd,
+        },
+        update: {
+          plan: plan as SubscriptionPlan,
+          billingInterval: billingInterval as BillingInterval,
+          status: SubscriptionStatus.ACTIVE,
+          stripeCustomerId,
+          stripeSubscriptionId,
+          currentPeriodEnd,
+        },
+      }),
+    ]);
 
-    const stripeSubscriptionId =
-      typeof session.subscription === "string" ? session.subscription : null;
-
-    if (!stripeSubscriptionId) {
-      throw new AppError(
-        httpStatus.BAD_REQUEST,
-        "Missing Stripe subscription ID",
-      );
-    }
-
-    const stripeCustomerId =
-      typeof session.customer === "string" ? session.customer : null;
-
-    if (!stripeCustomerId) {
-      throw new AppError(httpStatus.BAD_REQUEST, "Missing Stripe customer ID");
-    }
-
-    // Subscription activation and payment creation
-    // will be handled by invoice.paid.
     return;
   }
+
+  // Subsequent recurring payment, subscription already available
+  await prisma.$transaction([
+    prisma.payment.create({
+      data: {
+        organizationId: subscription.organizationId,
+        amount: invoice.amount_paid,
+        currency: invoice.currency,
+        status: PaymentStatus.COMPLETED,
+        type: PaymentType.SUBSCRIPTION,
+        stripeInvoiceId: invoice.id,
+        stripeSubscriptionId,
+      },
+    }),
+
+    prisma.subscription.update({
+      where: {
+        id: subscription.id,
+      },
+      data: {
+        status: SubscriptionStatus.ACTIVE,
+        currentPeriodEnd,
+      },
+    }),
+  ]);
+};
+
+export const handleInvoicePaymentFailed = async (event: Stripe.Event) => {
+  const invoice = event.data.object as Stripe.Invoice;
+
+  const subscriptionDetails = invoice.parent?.subscription_details;
+
+  if (!subscriptionDetails) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Missing subscription details in invoice",
+    );
+  }
+
+  const stripeSubscriptionId =
+    typeof subscriptionDetails.subscription === "string"
+      ? subscriptionDetails.subscription
+      : null;
+
+  if (!stripeSubscriptionId) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Missing Stripe subscription ID",
+    );
+  }
+
+  const subscription = await prisma.subscription.findUnique({
+    where: {
+      stripeSubscriptionId,
+    },
+  });
+
+  if (!subscription) {
+    return;
+  }
+
+  await prisma.$transaction([
+    prisma.payment.upsert({
+      where: {
+        stripeInvoiceId: invoice.id,
+      },
+      create: {
+        organizationId: subscription.organizationId,
+        amount: invoice.amount_due,
+        currency: invoice.currency,
+        status: PaymentStatus.FAILED,
+        type: PaymentType.SUBSCRIPTION,
+        stripeInvoiceId: invoice.id,
+        stripeSubscriptionId,
+      },
+      update: {
+        status: PaymentStatus.FAILED,
+      },
+    }),
+
+    prisma.subscription.update({
+      where: {
+        id: subscription.id,
+      },
+      data: {
+        status: SubscriptionStatus.PAST_DUE,
+      },
+    }),
+  ]);
 };

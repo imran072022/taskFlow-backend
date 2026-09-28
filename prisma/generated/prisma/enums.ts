@@ -92,7 +92,8 @@ export type SubscriptionPlan = (typeof SubscriptionPlan)[keyof typeof Subscripti
 export const SubscriptionStatus = {
   ACTIVE: 'ACTIVE',
   CANCELLED: 'CANCELLED',
-  EXPIRED: 'EXPIRED'
+  EXPIRED: 'EXPIRED',
+  PAST_DUE: 'PAST_DUE'
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
