@@ -39,3 +39,9 @@ export const selectPlanSchema = z.object({
       }
     }),
 });
+
+export const refundParamsSchema = z.object({
+  params: z.object({
+    paymentId: z.string().trim(),
+  }),
+});

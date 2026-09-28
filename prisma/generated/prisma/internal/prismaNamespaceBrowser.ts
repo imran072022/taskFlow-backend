@@ -191,6 +191,7 @@ export const PaymentScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   amount: 'amount',
+  refundedAmount: 'refundedAmount',
   currency: 'currency',
   status: 'status',
   type: 'type',

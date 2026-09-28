@@ -1,10 +1,9 @@
 import httpStatus from "http-status";
-
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { paymentsService } from "./payment.service";
 import type { Request, Response } from "express";
-import type { TSelectPlanLocals } from "./payment.type";
+import type { TPaymentIdParamsLocals, TSelectPlanLocals } from "./payment.type";
 import { AppError } from "../../errors/AppError";
 import { stripe } from "../../lib/stripe";
 import config from "../../config";
@@ -47,8 +46,37 @@ const handleWebhook = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json({ received: true });
 });
 
+const cancelSubscription = catchAsync(async (req: Request, res: Response) => {
+  const result = await paymentsService.cancelSubscription(req.user.id);
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    message:
+      "Subscription will be cancelled at the end of the current billing period",
+    data: result,
+  });
+});
+
+const refundPayment = catchAsync(
+  async (req: Request, res: Response<unknown, TPaymentIdParamsLocals>) => {
+    const { paymentId } = res.locals.validatedData.params;
+    const result = await paymentsService.refundPayment(req.user.id, paymentId);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      message: result.message,
+      data: {
+        refundAmount: result.refundAmount,
+        currency: result.currency,
+        refundId: result.refundId,
+      },
+    });
+  },
+);
+
 export const paymentsController = {
   getPlans,
   selectPlans,
   handleWebhook,
+  cancelSubscription,
+  refundPayment,
 };

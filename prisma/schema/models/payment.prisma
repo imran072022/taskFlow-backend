@@ -2,6 +2,7 @@ model Payment {
     id                      String        @id @default(uuid())
     organizationId          String
     amount                  Int
+    refundedAmount          Int           @default(0)
     currency                String
     status                  PaymentStatus
     type                    PaymentType

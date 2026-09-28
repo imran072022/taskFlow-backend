@@ -57,32 +57,13 @@ export const validatePlanChange = (
     );
   }
 
-  if (currentPlan === SubscriptionPlan.FREE) {
-    return;
-  }
-
-  if (currentPlan === SubscriptionPlan.BASIC) {
-    if (
-      newPlan === SubscriptionPlan.PRO ||
-      newPlan === SubscriptionPlan.LIFETIME
-    ) {
-      return;
-    }
-
+  if (
+    currentPlan === SubscriptionPlan.BASIC ||
+    currentPlan === SubscriptionPlan.PRO
+  ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "You cannot select this plan while Basic is active",
-    );
-  }
-
-  if (currentPlan === SubscriptionPlan.PRO) {
-    if (newPlan === SubscriptionPlan.LIFETIME) {
-      return;
-    }
-
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      "You cannot select this plan while Pro is active",
+      "Cancel your current subscription before selecting a new plan",
     );
   }
 };
@@ -163,6 +144,19 @@ export const handleCheckoutSessionCompleted = async (event: Stripe.Event) => {
 export const handleInvoicePaid = async (event: Stripe.Event) => {
   const invoice = event.data.object as Stripe.Invoice;
 
+  const invoicePayments = await stripe.invoicePayments.list({
+    invoice: invoice.id,
+  });
+  const paymentIntent = invoicePayments.data[0]?.payment.payment_intent;
+  const paymentIntentId =
+    typeof paymentIntent === "string" ? paymentIntent : null;
+  if (!paymentIntentId) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "PaymentIntent not found for invoice",
+    );
+  }
+
   const subscriptionDetails = invoice.parent?.subscription_details;
   if (!subscriptionDetails) {
     throw new AppError(
@@ -199,6 +193,7 @@ export const handleInvoicePaid = async (event: Stripe.Event) => {
       "Missing Stripe subscription ID",
     );
   }
+
   const subscriptionLine = invoice.lines.data.find(
     (line) =>
       line.parent?.subscription_item_details?.subscription ===
@@ -237,6 +232,7 @@ export const handleInvoicePaid = async (event: Stripe.Event) => {
           currency: invoice.currency,
           status: PaymentStatus.COMPLETED,
           type: PaymentType.SUBSCRIPTION,
+          stripePaymentIntentId: paymentIntentId,
           stripeInvoiceId: invoice.id,
           stripeSubscriptionId,
         },
@@ -278,6 +274,7 @@ export const handleInvoicePaid = async (event: Stripe.Event) => {
         currency: invoice.currency,
         status: PaymentStatus.COMPLETED,
         type: PaymentType.SUBSCRIPTION,
+        stripePaymentIntentId: paymentIntentId,
         stripeInvoiceId: invoice.id,
         stripeSubscriptionId,
       },
@@ -357,4 +354,32 @@ export const handleInvoicePaymentFailed = async (event: Stripe.Event) => {
       },
     }),
   ]);
+};
+
+export const handleSubscriptionDeleted = async (event: Stripe.Event) => {
+  console.log(event);
+  const stripeSubscription = event.data.object as Stripe.Subscription;
+
+  const subscription = await prisma.subscription.findUnique({
+    where: {
+      stripeSubscriptionId: stripeSubscription.id,
+    },
+  });
+
+  if (!subscription) {
+    return;
+  }
+
+  await prisma.subscription.update({
+    where: {
+      id: subscription.id,
+    },
+    data: {
+      plan: SubscriptionPlan.FREE,
+      billingInterval: null,
+      status: SubscriptionStatus.ACTIVE,
+      stripeSubscriptionId: null,
+      currentPeriodEnd: null,
+    },
+  });
 };
