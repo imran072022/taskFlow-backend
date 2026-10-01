@@ -10,7 +10,7 @@ export const authorization = (...roles: UserRole[]) => {
       if (!req.user) {
         throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
       }
-      const userRole = req.user.role;
+      const userRole: UserRole = req.user.role;
       if (!roles.includes(userRole)) {
         throw new AppError(
           httpStatus.FORBIDDEN,

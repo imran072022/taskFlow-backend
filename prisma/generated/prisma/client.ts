@@ -102,11 +102,6 @@ export type ProjectMembership = Prisma.ProjectMembershipModel
  */
 export type RefreshSession = Prisma.RefreshSessionModel
 /**
- * Model StripeWebhookEvent
- * 
- */
-export type StripeWebhookEvent = Prisma.StripeWebhookEventModel
-/**
  * Model Subscription
  * 
  */

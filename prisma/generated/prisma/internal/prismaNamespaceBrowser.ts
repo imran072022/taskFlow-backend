@@ -63,7 +63,6 @@ export const ModelName = {
   Project: 'Project',
   ProjectMembership: 'ProjectMembership',
   RefreshSession: 'RefreshSession',
-  StripeWebhookEvent: 'StripeWebhookEvent',
   Subscription: 'Subscription',
   Task: 'Task',
   User: 'User'
@@ -241,16 +240,6 @@ export const RefreshSessionScalarFieldEnum = {
 } as const
 
 export type RefreshSessionScalarFieldEnum = (typeof RefreshSessionScalarFieldEnum)[keyof typeof RefreshSessionScalarFieldEnum]
-
-
-export const StripeWebhookEventScalarFieldEnum = {
-  id: 'id',
-  eventId: 'eventId',
-  eventType: 'eventType',
-  processedAt: 'processedAt'
-} as const
-
-export type StripeWebhookEventScalarFieldEnum = (typeof StripeWebhookEventScalarFieldEnum)[keyof typeof StripeWebhookEventScalarFieldEnum]
 
 
 export const SubscriptionScalarFieldEnum = {

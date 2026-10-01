@@ -3,7 +3,6 @@ import { authController } from "./auth.controller";
 import { authentication } from "../../middlewares/authentication";
 import { authorization } from "../../middlewares/authorization";
 import {
-  createOrganizationSchema,
   forgotPassSchema,
   googleAuthSchema,
   loginSchema,
@@ -54,14 +53,6 @@ router.post(
   authentication,
   authorization(UserRole.ADMIN, UserRole.MEMBER, UserRole.OWNER),
   authController.logout,
-);
-
-router.post(
-  "/create-organization",
-  authentication,
-  authorization(UserRole.OWNER),
-  validateRequest(createOrganizationSchema),
-  authController.completeOrganization,
 );
 
 router.post(

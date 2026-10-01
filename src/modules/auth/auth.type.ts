@@ -1,6 +1,5 @@
 import type z from "zod";
 import type {
-  createOrganizationSchema,
   forgotPassSchema,
   googleAuthSchema,
   loginSchema,
@@ -77,10 +76,4 @@ export type TGoogleAuthPayloadLocals = {
 export type TLoginPayload = z.infer<typeof loginSchema>["body"];
 export type TLoginPayloadLocals = {
   validatedData: z.infer<typeof loginSchema>;
-};
-
-// (8).  organization onboarding api types
-export type TCreateOrg = z.infer<typeof createOrganizationSchema>["body"];
-export type TCreateOrgLocals = {
-  validatedData: z.infer<typeof createOrganizationSchema>;
 };

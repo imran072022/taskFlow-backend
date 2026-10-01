@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import type {
-  TCreateOrgLocals,
   TForgotPassEmailLocals,
   TGoogleAuthPayloadLocals,
   TLoginPayloadLocals,
@@ -124,20 +123,6 @@ const logout = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const completeOrganization = catchAsync(
-  async (req: Request, res: Response<unknown, TCreateOrgLocals>) => {
-    const result = await authService.completeOrganization(
-      res.locals.validatedData.body,
-      req.user.id,
-    );
-    sendResponse(res, {
-      statusCode: httpStatus.CREATED,
-      message: "Organization created successfully",
-      data: result,
-    });
-  },
-);
-
 const forgotPassword = catchAsync(
   async (req: Request, res: Response<unknown, TForgotPassEmailLocals>) => {
     const { email: forgotPassEmail } = res.locals.validatedData.body;
@@ -183,7 +168,6 @@ export const authController = {
   refreshToken,
   getMe,
   logout,
-  completeOrganization,
   forgotPassword,
   verifyForgotPassOtp,
   resetPassword,

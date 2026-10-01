@@ -7,6 +7,7 @@ import { authRoutes } from "./modules/auth/auth.route";
 import { globalErrorHandler } from "./errors/globalErrorHandler";
 import { paymentRoutes } from "./modules/payment/payment.route";
 import { paymentsController } from "./modules/payment/payment.controller";
+import { organizationRoutes } from "./modules/organization/organization.route";
 
 const app: Application = express();
 app.post(
@@ -25,6 +26,7 @@ app.use(
 );
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/payments", paymentRoutes);
+app.use("/api/v1/organizations", organizationRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);

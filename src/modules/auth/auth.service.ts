@@ -3,7 +3,6 @@ import { AppError } from "../../errors/AppError";
 import { prisma } from "../../lib/prisma";
 import type {
   JwtUserPayload,
-  TCreateOrg,
   TForgotPassEmail,
   TForgotPasswordOtpData,
   TGoogleAuthPayload,
@@ -286,22 +285,6 @@ const logout = async (refreshToken: string) => {
   }
 };
 
-// onboarding - create organization
-const completeOrganization = async (payload: TCreateOrg, userId: string) => {
-  const { name, description, industry, size, website } = payload;
-  const result = await prisma.organization.create({
-    data: {
-      name,
-      description,
-      industry,
-      size,
-      ...(website !== undefined && { website }),
-      ownerId: userId,
-    },
-  });
-  return result;
-};
-
 const forgotPassword = async (email: TForgotPassEmail) => {
   const user = await prisma.user.findUnique({
     where: {
@@ -422,7 +405,7 @@ export const authService = {
   refreshToken,
   getMe,
   logout,
-  completeOrganization,
+
   forgotPassword,
   verifyForgotPassOtp,
   resetPassword,
