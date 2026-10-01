@@ -14,7 +14,7 @@ import {
 const router = Router();
 
 router.post(
-  "/create-organization",
+  "/create",
   authentication,
   authorization(UserRole.OWNER),
   validateRequest(createOrganizationSchema),
